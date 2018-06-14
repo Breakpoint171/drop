@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+        }
+        .box{
+            width: 600px;
+            position: absolute;
+        }
+        .title{
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: black;
+            color: #ffffff;
+        }
+        .content{
+            height: 400px;
+            width: 600px;
+            position: relative;
+        }
+        .img li{
+            position: absolute;
+            top: 0;
+            left: 0;
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <div class="title">轮播图</div>
+    <div class="content">
+        <ul class="img">
+            <li style="z-index: 100" class="current"><a><img src="img/1.jpg"></a></li>
+            <li style="z-index: 99"><a><img src="img/2.jpg"></a></li>
+            <li style="z-index: 98"><a><img src="img/3.jpg"></a></li>
+        </ul>
+    </div>
+</div>
+
+<script src="jquery-3.3.1.js"></script>
+<script>
+    $(".title").mouseover(function () {
+        $(this).css("cursor","move");
+    }).mousedown(function (event) {
+        var startX = event.screenX;
+        var startY = event.screenY;
+        var box_left = $(this).parent().offset().left;
+        var box_top = $(this).parent().offset().top;
+        $(this).on("mousemove",function (e) {
+            var endX = e.screenX;
+            var endY = e.screenY;
+            var new_left = box_left + endX - startX;
+            var new_top = box_top + endY - startY;
+            $(this).parent().css("left",new_left + "px");
+            $(this).parent().css("top",new_top + "px");
+        }).mouseup(function () {
+            $(this).off("mousemove");
+        })
+    })
+    setInterval(move_R,1500);
+    var i = 0
+    function move_R() {
+        i++;
+        if(i == $(".img li").length){
+            i=0;
+        }
+        $(".number li").eq(i).addClass("current").siblings().removeClass("current");
+
+        $(".img li").eq(i).stop().fadeIn(1000).siblings().stop().fadeOut(1000);
+    }
+
+
+
+</script>
+
+</body>
+</html>
